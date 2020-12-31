@@ -1,0 +1,42 @@
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+################## Building of the "n-bit" Quantum Random Number Generator in the #################
+################## in Quantum Computer using the n-number of Hadamard Gates only  #################
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+#############################################################################################
+::::::::::::::::::::::::: Theoretical Description of QRNG working :::::::::::::::::::::::::::
+###### Hadamard gates make the superposition of each same incoming qubits in 'state-0' ######
+######    to the same superposition state, but the classical measurement of each       ######
+######        superimposed state gives the random value to as output to                ######
+######                                state-0 or state-1.                              ######
+#############################################################################################
+
+
+################## To call the different related libraries ###################
+
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit import IBMQ, Aer, execute
+%matplotlib inline
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, execute,IBMQ
+from qiskit.tools.monitor import job_monitor
+
+# Importing standard Qiskit libraries
+#from qiskit import QuantumCircuit, execute, Aer, IBMQ
+#from qiskit.compiler import transpile, assemble
+#from qiskit.tools.jupyter import *
+#from qiskit.visualization import *
+#from iqx import *
+
+# Loading your IBM Q account(s)
+provider = IBMQ.load_account()
+
+# Step_1
+### Defining the 'quantum & classical registers', and a quantum circuit ###
+### or Initialization
+
+bits = 16 # Number of bits input ( greater than or equal to 1)//
+q = QuantumRegister(bits) # To call the quantum register//
+c = ClassicalRegister(bits) # To call the classical register for measurements//
+qc = QuantumCircuit(q,c) # To call the quantum circuit consist of both quantum and classical registers//
+qc.draw(output='mpl') # To draw the quantum circuit//
