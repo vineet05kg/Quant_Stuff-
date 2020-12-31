@@ -1,0 +1,60 @@
+
+########### Building of Full Adder Quantum Circuit here ############
+
+################## To call the related libraries ###################
+
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit import IBMQ, Aer, execute
+
+# Step_1
+### Defining the 'quantum & classical registers', and a quantum circuit ###
+q = QuantumRegister(8)
+c = ClassicalRegister(2)
+qc = QuantumCircuit(q,c)
+
+# Step_2
+### To set the input commands ###
+qc.x(q[0])
+#qc.x(q[1])
+qc.x(q[2])
+
+# Step_3
+### To define the logic for 'sum' ###
+qc.cx(q[2], q[6])
+qc.cx(q[1], q[6])
+qc.cx(q[0], q[6])
+qc.barrier()
+
+# Step_4
+### To define the logic for carry ###
+qc.cx(q[1], q[3])
+qc.cx(q[0], q[3])
+qc.ccx(q[2], q[3], q[4])
+qc.ccx(q[0], q[1], q[5])
+qc.cx(q[5], q[7])
+qc.cx(q[4], q[7])
+qc.ccx(q[4], q[5], q[7])
+qc.barrier()
+
+# Step_5
+### To measure the sum ###
+qc.measure(q[6], c[0])
+
+# Step_5
+### To measure the carry ###
+qc.measure(q[7], c[1])
+
+# Step_6
+### To display the circuit ###
+backend = Aer.get_backend('qasm_simulator')
+job = execute(qc, backend, shots=1000)
+result = job.result()
+count =result.get_counts()
+print(count)
+qc.draw(output='mpl')
+
+# Step_7
+### To plot the result ###
+backend = Aer.get_backend('statevector_simulator')
+result = execute(qc, backend).result().get_statevector(qc, decimals=3)
+plot_bloch_multivector(result)
